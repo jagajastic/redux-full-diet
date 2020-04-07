@@ -3,21 +3,16 @@ import { connect } from "react-redux";
 
 import Article from "../components/Article/Article";
 import AddArticle from "../components/AddArticle/AddArticle";
+import { simulateHttpRequest } from "../store/actionCreators";
 
-const Articles = ({ articles }) => {
-  const saveArticle = (e) => {
-    e.preventDefault();
-    // the logic will be updated later
-  };
-  return (
-    <div>
-      <AddArticle saveArticle={saveArticle} />
-      {articles.map((article) => (
-        <Article key={article.id} article={article} />
-      ))}
-    </div>
-  );
-};
+const Articles = ({ articles, saveArticle }) => (
+  <div>
+    <AddArticle saveArticle={saveArticle} />
+    {articles.map((article) => (
+      <Article key={article.id} article={article} />
+    ))}
+  </div>
+);
 
 const mapStateToProps = (state) => {
   return {
@@ -25,4 +20,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Articles);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveArticle: (article) => dispatch(simulateHttpRequest(article)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Articles);
